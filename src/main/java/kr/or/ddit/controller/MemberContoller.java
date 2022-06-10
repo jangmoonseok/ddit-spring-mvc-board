@@ -1,8 +1,10 @@
 package kr.or.ddit.controller;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -113,6 +115,48 @@ public class MemberContoller{
 		}
 		
 		memberService.modify(member);
+		
+		//로그인한 사용자의 경우 수정된 정보로 session업로드
+		rttr.addFlashAttribute("parentReload", false);
+		MemberVO loginUser = (MemberVO)session.getAttribute("loginUser");
+		if(loginUser != null && member.getId().equals(loginUser.getId())) {
+			session.setAttribute("loginUser", member);
+			rttr.addFlashAttribute("parentReload", true);
+		}
+		
+		rttr.addAttribute("id",member.getId());
+		rttr.addFlashAttribute("from", "modify");
+		rttr.addFlashAttribute("member", memberService.getMember(modifyReq.getId()));
+		
+		return url;
+	}
+	
+	@Resource(name="picturePath")
+	private String picturePath;
+	
+	@RequestMapping(value="/remove", method=RequestMethod.GET)
+	public String remove(String id, HttpSession session, RedirectAttributes rttr) throws Exception{
+		String url = "redirect:/member/detail.do";
+		
+		MemberVO member = memberService.getMember(id);
+		
+		String savedPath = picturePath;
+		File imageFile = new File(savedPath, member.getPicture());
+		if(imageFile.exists()) {
+			imageFile.delete();
+		}
+		
+		memberService.remove(id);
+		
+		MemberVO loginUser = (MemberVO)session.getAttribute("loginUser");
+		if(loginUser != null && loginUser.getId().equals(member.getId())) {
+			session.invalidate();
+		}
+		
+		rttr.addFlashAttribute("removeMember", member);
+		rttr.addFlashAttribute("from", "remove");
+		
+		rttr.addAttribute("id", id);
 		
 		return url;
 	}

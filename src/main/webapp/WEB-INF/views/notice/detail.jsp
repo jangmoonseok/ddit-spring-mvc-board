@@ -83,4 +83,15 @@
 		location.href = "remove.do?nno=" + nno;
 	}
 </script>    
+<script>
+	if(${from eq 'modify'}){
+		if(${status eq 'success'}){
+			alert("공지사항이 수정되었습니다.");
+			window.location.reload();
+		}else{			
+			alert("서버내부문제로 수정이 실패했습니다.");
+		}
+	}
+	
+</script>
 </body>
