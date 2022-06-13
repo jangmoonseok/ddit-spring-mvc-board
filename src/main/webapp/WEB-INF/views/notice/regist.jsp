@@ -96,17 +96,6 @@
 		form.submit();
 	}
 </script>
-<script>
-	if(${from eq 'regist'}){
-		if(${status eq 'success'}){
-			alert("공지사항이 등록되었습니다.");
-			window.close();
-			window.opener.location.reload();
-		}else{
-			alert("서버문제로 공지사항등록이 실패했습니다.");
-		}
-		
-	}
-</script>  
+
 </body>
        

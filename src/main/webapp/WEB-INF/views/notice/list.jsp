@@ -109,3 +109,22 @@
 		</div>
 		
     </section>
+    <c:if test="${from eq 'regist' }">    
+	    <script>
+	   		alert("공지사항이 등록되었습니다.");
+	   		window.close();
+	   		window.opener.location.reload();
+	    </script>
+    </c:if>
+    
+    <c:if test="${from eq 'remove' }">
+    	<script>
+    		alert("공지사항이 삭제되었습니다.");
+    		window.close();
+    		window.opener.location.reload();
+    	</script>
+    </c:if>
+</body>
+    
+    
+ 

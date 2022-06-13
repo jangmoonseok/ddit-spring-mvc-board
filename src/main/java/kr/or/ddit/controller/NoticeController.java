@@ -3,6 +3,7 @@ package kr.or.ddit.controller;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,17 +28,17 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	@RequestMapping("/main")
+	public String main() throws Exception{
+		String url ="notice/main";
+		return url;
+	}
+	
 	@RequestMapping("/list")
 	public ModelAndView list(SearchCriteria cri, ModelAndView mnv) throws Exception{
 		String url = "notice/list";
 		
-		Map<String, Object> dataMap = null;
-		try {			
-			dataMap = noticeService.getNoticeList(cri);
-		}catch(SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
+		Map<String, Object> dataMap = noticeService.getNoticeList(cri);
 		
 		mnv.addObject("dataMap", dataMap);
 		mnv.setViewName(url);
@@ -51,46 +53,36 @@ public class NoticeController {
 		String url = "notice/regist";
 		
 		//MemberVO loginUser = (MemberVO)session.getAttribute("loginUser");
-		MemberVO loginUser = null;
-		try {
-			loginUser = memberService.getMember("mimi");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+		MemberVO loginUser = memberService.getMember("mimi");
 		
-		session.setAttribute("loginUser", loginUser);
 		model.addAttribute("loginUser", loginUser);
 		return url;
 	}
 	
 	@RequestMapping(value="/regist", method=RequestMethod.POST)
-	public String regist(NoticeVO notice, RedirectAttributes rttr) throws Exception{
-		String url = "redirect:/notice/registForm.do";
+	public String regist(NoticeVO notice, RedirectAttributes rttr, HttpServletRequest request) throws Exception{
+		String url = "redirect:/notice/list";
 		
-		try {
-			noticeService.regist(notice);
-			rttr.addFlashAttribute("status", "success");
-		}catch(SQLException e) {
-			e.printStackTrace();
-			rttr.addFlashAttribute("status", "fail");
-		}
+		notice.setTitle((String)request.getAttribute("XSStitle"));
+		noticeService.regist(notice);
+
 		rttr.addFlashAttribute("from", "regist");
 		
 		return url;
 	}
 	
 	@RequestMapping(value="/detail", method=RequestMethod.GET)
-	public ModelAndView detail(int nno, ModelAndView mnv) throws Exception{
+	public ModelAndView detail(int nno, ModelAndView mnv, @RequestParam(defaultValue = "") String from) throws Exception{
 		String url = "notice/detail";
 		
 		NoticeVO notice = null;
 		
-		try {
+		if(!from.equals("list")) {
+			notice = noticeService.getNoticeForModify(nno);
+			
+		}else {
 			notice = noticeService.getNotice(nno);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
+			url = "redirect:/notice/detail.do?nno="+nno;
 		}
 		
 		mnv.addObject("notice", notice);
@@ -102,14 +94,7 @@ public class NoticeController {
 	public ModelAndView modifyForm(int nno, ModelAndView mnv) throws Exception{
 		String url = "notice/modify";
 		
-		NoticeVO notice = null;
-		
-		try {
-			notice = noticeService.getNoticeForModify(nno);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
+		NoticeVO notice = noticeService.getNoticeForModify(nno);
 		
 		mnv.addObject("notice", notice);
 		mnv.setViewName(url);
@@ -117,19 +102,15 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value="/modify", method=RequestMethod.POST)
-	public String modify(NoticeVO notice, RedirectAttributes rttr) throws Exception{
+	public String modify(NoticeVO notice, RedirectAttributes rttr, HttpServletRequest request) throws Exception{
 		String url = "redirect:/notice/detail.do";
 		
-		try {
-			noticeService.modify(notice);
-			rttr.addAttribute("nno", notice.getNno());
-			rttr.addFlashAttribute("status", "success");
-		}catch(Exception e) {
-			e.printStackTrace();
-			rttr.addFlashAttribute("status", "fail");
-			throw e;
-		}
+		//notice.setTitle(HTMLInputFilter.htmlSpecialChars(notice.getTitle())
+		notice.setTitle((String)request.getAttribute("XSStitle"));
 		
+		noticeService.modify(notice);
+		
+		rttr.addAttribute("nno", notice.getNno());
 		rttr.addFlashAttribute("from", "modify");
 		
 		return url;
@@ -137,14 +118,11 @@ public class NoticeController {
 	
 	@RequestMapping(value="/remove")
 	public String remove(int nno, RedirectAttributes rttr) throws Exception{
-		String url = "redirect:/notice/detail.do";
+		String url = "redirect:/notice/list.do";
 		
-		try {
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			
-		}
+		noticeService.remove(nno);
+		
+		rttr.addFlashAttribute("from", "remove");
 		return url;
 	}
 }
