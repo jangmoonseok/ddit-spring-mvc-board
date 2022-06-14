@@ -27,6 +27,7 @@
 		<opensymphony.sitemesh-version>2.4.2</opensymphony.sitemesh-version>
 		<commons.fileupload-version>1.3.1</commons.fileupload-version>
 		<jackson.databind-version>2.9.8</jackson.databind-version>
+		<aspectjweaver-version>1.9.6</aspectjweaver-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -60,6 +61,14 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 				
+		<!-- aspectjweaver -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>${aspectjweaver-version}</version>
+		    <scope>runtime</scope>
+		</dependency>		
+		
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
