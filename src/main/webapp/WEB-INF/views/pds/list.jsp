@@ -117,6 +117,14 @@
 		</div>
 	</section>
 
+<script>
+
+	<c:if test="${from eq 'regist' }">
+		alert("자료가 등록되었습니다.");
+		window.close();
+		window.opener.location.reload();
+	</c:if>	
+</script>
 </body>
 
 
