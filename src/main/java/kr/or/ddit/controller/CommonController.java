@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -81,27 +82,41 @@ public class CommonController {
 		return url;
 	}
 	
-	@RequestMapping(value="/common/login", method=RequestMethod.POST)
-	public String login(String id, String pwd, HttpSession session) throws Exception{
-		String url = "redirect:/index.do";
+	@RequestMapping("/security/accessDenied")
+	public void accessDenied() {
 		
-		try {
-			memberService.login(id, pwd);
-			session.setAttribute("loginUser", memberService.getMember(id));
-		}catch(NotFoundIdException | InvalidPasswordException e) {
-			url = "common/login_fail";
-		}catch(SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
+	}
+	
+	@RequestMapping("/common/loginTimeOut")
+	public String loginTimeOut(Model model) throws Exception{
+		String url = "security/sessionOut";
+		
+		model.addAttribute("message", "세션이 만료되었습니다.\\n다시 로그인 해주세요.");
 		
 		return url;
 	}
 	
-	@RequestMapping(value="/common/logout", method=RequestMethod.GET)
-	public String logout(HttpSession session) {
-		String url = "redirect:/";
-		session.invalidate();
-		return url;
-	}
+//	@RequestMapping(value="/common/login", method=RequestMethod.POST)
+//	public String login(String id, String pwd, HttpSession session) throws Exception{
+//		String url = "redirect:/index.do";
+//		
+//		try {
+//			memberService.login(id, pwd);
+//			session.setAttribute("loginUser", memberService.getMember(id));
+//		}catch(NotFoundIdException | InvalidPasswordException e) {
+//			url = "common/login_fail";
+//		}catch(SQLException e) {
+//			e.printStackTrace();
+//			throw e;
+//		}
+//		
+//		return url;
+//	}
+//	
+//	@RequestMapping(value="/common/logout", method=RequestMethod.GET)
+//	public String logout(HttpSession session) {
+//		String url = "redirect:/";
+//		session.invalidate();
+//		return url;
+//	}
 }

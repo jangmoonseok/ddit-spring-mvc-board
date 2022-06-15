@@ -12,6 +12,7 @@
 		<config>src/main/resources/kr/or/ddit/context/application-context.xml</config>
 		<config>src/main/resources/kr/or/ddit/context/root-context.xml</config>
 		<config>src/main/resources/kr/or/ddit/context/aop-context.xml</config>
+		<config>src/main/resources/kr/or/ddit/context/security-context.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/resources/kr/or/ddit/context/servlet-context.xml</config>
