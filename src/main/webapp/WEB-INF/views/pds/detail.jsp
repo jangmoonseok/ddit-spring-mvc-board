@@ -108,4 +108,18 @@
     		location.href = url + "?pno=" + pno;
     	}
     </script>
+	<c:if test="${from eq 'modify' }">
+		<script>
+			alert("자료가 수정되었습니다.");
+			window.location.reload();
+		</script>
+	</c:if>
+	
+	<c:if test="${from eq 'remove' }">
+		<script>
+			alert("자료가 삭제되었습니다.");
+			window.close();
+			window.opener.location.reload();
+		</script>
+	</c:if>
  </body>
