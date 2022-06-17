@@ -1,4 +1,4 @@
-package kr.or.ddit.controller;
+package kr.or.ddit.controller.advisor;
 
 import java.sql.SQLException;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.jsp.dto.MemberVO;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "kr.or.ddit.controller.view")
 public class ExceptionControllerAdvisor {
 	
 	@ExceptionHandler(SQLException.class)

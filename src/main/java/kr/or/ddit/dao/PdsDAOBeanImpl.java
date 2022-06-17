@@ -65,7 +65,8 @@ public class PdsDAOBeanImpl implements PdsDAOBean {
 
 	@Override
 	public PdsVO selectPdsByImage(String imageFile) throws SQLException {
-		PdsVO pds = session.selectOne("Pds-Mapper.selectPdsByImage",imageFile);
+		PdsVO pds = null;
+		pds = session.selectOne("Pds-Mapper.selectPdsByImage",imageFile);
 		return pds;
 	}
 

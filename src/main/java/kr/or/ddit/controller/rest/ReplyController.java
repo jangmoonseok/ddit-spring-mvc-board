@@ -1,5 +1,6 @@
-package kr.or.ddit.controller;
+package kr.or.ddit.controller.rest;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.xml.ws.Response;
@@ -59,7 +60,7 @@ public class ReplyController {
 		replyService.registReply(reply);
 		
 		Criteria cri = new Criteria();
-		
+		if(true) throw new SQLException();
 		Map<String, Object> dataMap = replyService.getReplyList(reply.getBno(), cri);
 		PageMaker pageMaker = (PageMaker)dataMap.get("pageMaker");
 		int realEndPage = pageMaker.getRealEndPage();

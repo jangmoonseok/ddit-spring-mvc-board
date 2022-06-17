@@ -59,6 +59,10 @@
 		order by regdate desc
 	</select>
 	
+	<select id="selectBoardByImage" resultType="board">
+		select * from board
+		where content like '%'||#{imageFile}||'%'
+	</select>
 	
 	<select id="selectBoardByBno"  resultType="board">
 		select * 

@@ -1,5 +1,6 @@
-package kr.or.ddit.controller;
+package kr.or.ddit.controller.view;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public class BoardController {
 		
 		board.setTitle((String)request.getAttribute("XSStitle"));
 		boardService.regist(board);
-		
+		if(true) throw new SQLException();
 		rttr.addFlashAttribute("from", "regist");
 		return url;
 	}

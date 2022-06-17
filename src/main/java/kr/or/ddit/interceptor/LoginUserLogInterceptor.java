@@ -1,23 +1,20 @@
-package kr.or.ddit.security;
+package kr.or.ddit.interceptor;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.jsp.dto.MemberVO;
 
-public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler{
+public class LoginUserLogInterceptor extends HandlerInterceptorAdapter{
 
 	private String savePath = "c:\\log";
 	private String saveFileName = "login_user_log.csv";
@@ -30,24 +27,12 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 	}
 	
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws ServletException, IOException {
-		User user = (User)authentication.getDetails();
-		MemberVO loginUser = user.getMemberVO();
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
+		MemberVO loginUser = (MemberVO)request.getSession().getAttribute("loginUser");
 		
-		// session저장
-		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", loginUser);
-		session.setMaxInactiveInterval(60 * 6);
+		if(loginUser == null) return;
 		
-		//log작성
-		loginUserlogFile(loginUser, request);
-		
-		//화면전환
-		super.onAuthenticationSuccess(request, response, authentication);
-	}
-	
-	private void loginUserlogFile(MemberVO loginUser, HttpServletRequest request) throws IOException{
 		String tag = "[login:user]";
 		String log = tag + loginUser.getId() + ","
 				   		 + loginUser.getPhone() + ","
@@ -65,6 +50,6 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		out.newLine();
 		out.close();
 	}
-
+	
 	
 }

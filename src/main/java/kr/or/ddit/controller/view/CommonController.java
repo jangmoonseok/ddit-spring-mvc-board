@@ -1,4 +1,4 @@
-package kr.or.ddit.controller;
+package kr.or.ddit.controller.view;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -52,23 +52,7 @@ public class CommonController {
 		return url;
 	}
 	
-	@RequestMapping(value="/subMenu" ,method=RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<List<MenuVO>> subMenu(@RequestParam(defaultValue = "M000000") String mCode) throws Exception {
-		ResponseEntity<List<MenuVO>> entity = null;
-		
-		List<MenuVO> subMenuList = null;
-		
-		try {
-			subMenuList = menuService.getSubMenuList(mCode);
-			entity = new ResponseEntity<List<MenuVO>>(subMenuList, HttpStatus.OK);
-		}catch(Exception e) {
-			entity = new ResponseEntity<List<MenuVO>>(HttpStatus.INTERNAL_SERVER_ERROR);
-			e.printStackTrace();
-		}
-		
-		return entity;
-	}
+	
 	
 	@RequestMapping(value="/common/loginForm", method=RequestMethod.GET)
 	public String loginForm(@RequestParam(defaultValue = "")String error, HttpServletResponse response) 
@@ -96,22 +80,22 @@ public class CommonController {
 		return url;
 	}
 	
-//	@RequestMapping(value="/common/login", method=RequestMethod.POST)
-//	public String login(String id, String pwd, HttpSession session) throws Exception{
-//		String url = "redirect:/index.do";
-//		
-//		try {
-//			memberService.login(id, pwd);
-//			session.setAttribute("loginUser", memberService.getMember(id));
-//		}catch(NotFoundIdException | InvalidPasswordException e) {
-//			url = "common/login_fail";
-//		}catch(SQLException e) {
-//			e.printStackTrace();
-//			throw e;
-//		}
-//		
-//		return url;
-//	}
+	@RequestMapping(value="/common/login", method=RequestMethod.POST)
+	public String login(String id, String pwd, HttpSession session) throws Exception{
+		String url = "redirect:/index.do";
+		
+		try {
+			memberService.login(id, pwd);
+			session.setAttribute("loginUser", memberService.getMember(id));
+		}catch(NotFoundIdException | InvalidPasswordException e) {
+			url = "common/login_fail";
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return url;
+	}
 //	
 //	@RequestMapping(value="/common/logout", method=RequestMethod.GET)
 //	public String logout(HttpSession session) {

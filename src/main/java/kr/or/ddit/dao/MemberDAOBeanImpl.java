@@ -48,7 +48,9 @@ public class MemberDAOBeanImpl implements MemberDAOBean {
 
 	@Override
 	public MemberVO selectMemberByPicture(String picture) throws SQLException {	
-		return null;
+		MemberVO member = null;
+		member = session.selectOne("Member-Mapper.selectMemberByPicture", picture);
+		return member;
 	}
 
 	@Override

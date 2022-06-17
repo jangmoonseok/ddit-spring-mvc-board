@@ -38,6 +38,11 @@
 			<mapping path="/**/modify.do"/>
 			<beans:bean class="kr.or.ddit.interceptor.XSSRequestInterceptor"/>
 		</interceptor>
+<!-- 		<interceptor>
+			<mapping path="/common/login.do"/>
+			<beans:bean class="kr.or.ddit.interceptor.LoginUserLogInterceptor"
+			            p:savePath-ref="loginUserLogSavePath"/>
+		</interceptor> -->
 	</interceptors>
 	
 	<!-- Views -->

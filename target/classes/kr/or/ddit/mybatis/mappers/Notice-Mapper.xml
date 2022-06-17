@@ -67,7 +67,10 @@
 		where nno is not null
 		<include refid="search" />
 		order by regDate desc
-		
+	</select>
+	<select id="selectNoticeByImage" resultType="notice">
+		select * from notice
+		where content like '%'||#{imageFile}||'%'
 	</select>
 	<select id="selectNoticeByNno" parameterType="int" resultType="notice">
 		select 

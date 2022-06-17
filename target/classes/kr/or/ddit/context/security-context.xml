@@ -13,6 +13,7 @@
 	<beans:bean id="loginSuccessHandler"
 			 	class="kr.or.ddit.security.LoginSuccessHandler"
 			 	p:defaultTargetUrl="/index.do"
+			    p:savePath-ref="loginUserLogSavePath"
 			 	/>
 	<beans:bean id="loginFailureHandler"
 	            class="kr.or.ddit.security.LoginFailureHandler"

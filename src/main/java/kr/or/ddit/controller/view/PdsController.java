@@ -1,4 +1,4 @@
-package kr.or.ddit.controller;
+package kr.or.ddit.controller.view;
 
 import java.io.File;
 import java.util.ArrayList;

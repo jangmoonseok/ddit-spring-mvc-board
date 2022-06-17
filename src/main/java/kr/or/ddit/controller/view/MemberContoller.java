@@ -1,4 +1,4 @@
-package kr.or.ddit.controller;
+package kr.or.ddit.controller.view;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -23,6 +23,7 @@ import com.jsp.dto.MemberVO;
 import com.jsp.service.LoginSearchMemberService;
 
 import kr.or.ddit.command.MemberModifyCommand;
+import kr.or.ddit.controller.rest.MemberRestController;
 
 @Controller
 @RequestMapping(value="/member")
