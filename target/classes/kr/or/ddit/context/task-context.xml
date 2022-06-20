@@ -19,7 +19,13 @@
 				p:pdsDAO-ref="pdsDAOBean"
 				p:filePath-ref="imgPath"
 	/>
-		  
+	
+	<beans:bean id="loginUserLogTask"
+	            class="kr.or.ddit.scheduler.LoginUserLogTaskScheduler"
+	            p:loginUserLogService-ref="LoginUserLogService"
+	            p:savePath-ref="loginUserLogSavePath"/>
+	            
+	            		  
 	<scheduler id="memberPictureRemoveScheduler"/>
 	<scheduled-tasks scheduler="memberPictureRemoveScheduler">
 		<scheduled ref="memberPictureRemoveTask" method="removePicture" cron="*/10 * * * * *"/>
@@ -28,6 +34,11 @@
 	<scheduler id="summernoteImageScheduler"/>
 	<scheduled-tasks scheduler="summernoteImageScheduler">
 		<scheduled ref="summernoteImageRemoveTask" method="fileRemove" cron="*/10 * * * * *"/>
+	</scheduled-tasks>
+	
+	<scheduler id="LoginUserLogScheduler"/>
+	<scheduled-tasks scheduler="LoginUserLogScheduler">
+		<scheduled ref="loginUserLogTask" method="loginUserLogToDataBase" cron="*/10 * * * * *"/>
 	</scheduled-tasks>
 
 </beans:beans>

@@ -59,6 +59,8 @@
 		  p:session-ref="sqlSession"/>	  
 	<bean id="replyDAOBean" class="kr.or.ddit.dao.ReplyDAOBeanImpl"
 		  p:replyDAO-ref="replyDAO"
+		  p:session-ref="sqlSession"/>
+	<bean id="loginUserLogDAO" class="kr.or.ddit.dao.LoginUserLogDAOImpl"
 		  p:session-ref="sqlSession"/>	  
 
 	<!-- service -->
@@ -77,5 +79,7 @@
 	<bean id="replyService" class="kr.or.ddit.service.ReplyServiceImpl"
 		  p:memberDAOBean-ref="memberDAOBean"
 		  p:replyDAOBean-ref="replyDAOBean"/>
+	<bean id="LoginUserLogService" class="kr.or.ddit.service.LoginUserLogServiceImpl"
+	      p:logDAO-ref="loginUserLogDAO"/>
 	
 </beans>
